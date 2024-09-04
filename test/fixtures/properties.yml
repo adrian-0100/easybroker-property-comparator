@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  price: 9.99
+  size: 9.99
+  location: MyString
+  property_type: MyString
+  easybroker_id: MyString
+
+two:
+  title: MyString
+  description: MyText
+  price: 9.99
+  size: 9.99
+  location: MyString
+  property_type: MyString
+  easybroker_id: MyString
