@@ -20,7 +20,7 @@ class EasyBrokerClient
         size: format_size(property_data['construction_size'])
       }
     else
-      raise "Error obteniendo propiedad: #{response.code}"
+      raise "Error fetching property: #{response.code}"
     end
   end
 
