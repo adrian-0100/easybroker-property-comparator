@@ -1,12 +1,12 @@
 source "https://rubygems.org"
 
 # Load environment variables from a .env file into ENV in development and test
-gem 'dotenv-rails', groups: [:development, :test]
+gem "dotenv-rails", groups: [ :development, :test ]
 # Make API requests with ease
-gem 'httparty'
+gem "httparty"
 
 # To generate XML files
-gem 'builder'
+gem "builder"
 
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
@@ -49,4 +49,3 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
-

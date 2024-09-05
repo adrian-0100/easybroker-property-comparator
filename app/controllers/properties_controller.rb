@@ -6,9 +6,9 @@ class PropertiesController < ApplicationController
     @property_2 = client.get_property(params[:property_id_2])
 
     if @property_1 && @property_2
-      @price_difference = calculate_percentage_difference(extract_numeric_value(@property_1[:formatted_price]), 
+      @price_difference = calculate_percentage_difference(extract_numeric_value(@property_1[:formatted_price]),
                                                           extract_numeric_value(@property_2[:formatted_price]))
-      @size_difference = calculate_percentage_difference(extract_numeric_value(@property_1[:size]), 
+      @size_difference = calculate_percentage_difference(extract_numeric_value(@property_1[:size]),
                                                          extract_numeric_value(@property_2[:size]))
     else
       flash[:error] = "No se pudieron obtener las propiedades."
@@ -20,14 +20,14 @@ class PropertiesController < ApplicationController
     @property_1 = client.get_property(params[:property_id_1])
     @property_2 = client.get_property(params[:property_id_2])
 
-    @price_difference = calculate_percentage_difference(extract_numeric_value(@property_1[:formatted_price]), 
+    @price_difference = calculate_percentage_difference(extract_numeric_value(@property_1[:formatted_price]),
                                                         extract_numeric_value(@property_2[:formatted_price]))
-    @size_difference = calculate_percentage_difference(extract_numeric_value(@property_1[:size]), 
+    @size_difference = calculate_percentage_difference(extract_numeric_value(@property_1[:size]),
                                                        extract_numeric_value(@property_2[:size]))
 
     respond_to do |format|
       format.xml do
-        response.headers['Content-Disposition'] = 'attachment; filename="property_comparison.xml"'
+        response.headers["Content-Disposition"] = 'attachment; filename="property_comparison.xml"'
         render :export_comparison
       end
     end
@@ -40,11 +40,11 @@ class PropertiesController < ApplicationController
   end
 
   def extract_numeric_value(string)
-    string.gsub(/[^\d.]/, '').to_f
+    string.gsub(/[^\d.]/, "").to_f
   end
 
   def calculate_percentage_difference(value1, value2)
     return 0.0 if value1 == 0.0 || value2 == 0.0
-    ((value1 - value2).abs / [(value1 + value2) / 2, 1].max) * 100
+    ((value1 - value2).abs / [ (value1 + value2) / 2, 1 ].max) * 100
   end
 end
