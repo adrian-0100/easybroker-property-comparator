@@ -1,5 +1,14 @@
 source "https://rubygems.org"
 
+# Load environment variables from a .env file into ENV in development and test
+gem 'dotenv-rails', groups: [:development, :test]
+# Make API requests with ease
+gem 'httparty'
+
+# To generate XML files
+gem 'builder'
+
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.1"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]

@@ -1,0 +1,13 @@
+<h1>Property Comparison</h1>
+
+<h2>Property 1: <%= @property_1[:title] %></h2>
+<p>Price: <%= @property_1[:formatted_price] %></p>
+<p>Size: <%= @property_1[:size] %></p>
+
+<h2>Property 2: <%= @property_2[:title] %></h2>
+<p>Price: <%= @property_2[:formatted_price] %></p>
+<p>Size: <%= @property_2[:size] %></p>
+
+<h3>Comparison Results</h3>
+<p>Price Difference: <%= (@price_difference || 0.0).round(2) %>%</p>
+<p>Size Difference: <%= (@size_difference || 0.0).round(2) %>%</p>

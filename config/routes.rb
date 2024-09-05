@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
   root 'properties#index'
-  resources :properties, only: [:index, :show]
+  get 'compare_properties', to: 'properties#compare'
 end
