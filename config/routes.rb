@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   post "save_comparison", to: "properties#save_comparison"
   get "export_comparison", to: "properties#export_comparison", defaults: { format: "xml" }
   resources :comparisons, only: [ :index ]
+  resources :comparisons, only: [ :show ]
 end

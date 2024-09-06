@@ -1,0 +1,15 @@
+<div class="my-comparisons-sidebar">
+  <h3>My Comparisons</h3>
+  <ul>
+    <% current_user.comparisons.order(created_at: :desc).limit(5).each do |comparison| %>
+      <li>
+        <%= link_to comparison_path(comparison) do %>
+          <%= comparison.properties.first.title %> vs <%= comparison.properties.second.title %>
+        <% end %>
+        <br>
+        <small><%= time_ago_in_words(comparison.created_at) %> ago</small>
+        <p><%= comparison.comments.first&.content %></p>
+      </li>
+    <% end %>
+  </ul>
+</div>
