@@ -8,6 +8,7 @@
       <th>Size Difference</th>
       <th>Made By</th>
       <th>Date</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -18,8 +19,9 @@
         </td>
         <td><%= number_to_percentage(comparison.price_difference, precision: 2) %></td>
         <td><%= number_to_percentage(comparison.size_difference, precision: 2) %></td>
-        <td><%= comparison.user&.username || 'Anonymous' %></td>
+        <td><%= comparison.user&.email || 'Anonymous' %></td>
         <td><%= comparison.created_at.strftime('%B %d, %Y') %></td>
+        <td><%= link_to 'View', comparison_path(comparison) %></td>
       </tr>
     <% end %>
   </tbody>

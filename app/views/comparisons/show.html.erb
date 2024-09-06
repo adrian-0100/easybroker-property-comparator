@@ -1,0 +1,24 @@
+<h1>Comparison Details</h1>
+
+<h2>Properties Compared</h2>
+<% @comparison.properties.each do |property| %>
+  <h3><%= property.title %></h3>
+  <p>Price: <%= number_to_currency(property.price) %></p>
+  <p>Size: <%= property.size %> m²</p>
+<% end %>
+
+<h2>Comparison Results</h2>
+<p>Price Difference: <%= number_to_percentage(@comparison.price_difference, precision: 2) %></p>
+<p>Size Difference: <%= number_to_percentage(@comparison.size_difference, precision: 2) %></p>
+
+<h2>Comment</h2>
+<% if @comparison.comments.any? %>
+  <p><%= @comparison.comments.first.content %></p>
+<% else %>
+  <p>No comments yet.</p>
+<% end %>
+
+<p>Made by: <%= @comparison.user.email %></p>
+<p>Date: <%= @comparison.created_at.strftime('%B %d, %Y at %H:%M') %></p>
+
+<%= link_to 'Back to All Comparisons', comparisons_path %>
