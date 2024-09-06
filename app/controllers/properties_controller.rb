@@ -1,5 +1,6 @@
 class PropertiesController < ApplicationController
   before_action :authenticate_user!, except: [ :index ]
+
   def compare
     client = EasyBrokerClient.new
 
@@ -15,13 +16,40 @@ class PropertiesController < ApplicationController
       # Save consulted properties
       save_property(@property_1, params[:property_id_1])
       save_property(@property_2, params[:property_id_2])
-
-      # Save comparison
-      save_comparison(@property_1, @property_2, params[:property_id_1], params[:property_id_2])
     else
       flash[:error] = "No se pudieron obtener las propiedades."
       redirect_to root_path
     end
+  end
+
+  def save_comparison
+    comparison = Comparison.new(
+      price_difference: params[:price_difference],
+      size_difference: params[:size_difference],
+      user: current_user
+    )
+
+    property1 = Property.find_by(easybroker_id: params[:property_id_1])
+    property2 = Property.find_by(easybroker_id: params[:property_id_2])
+
+    if property1 && property2
+      comparison.properties = [ property1, property2 ]
+
+      if comparison.save
+        Comment.create(
+          content: params[:comment],
+          user: current_user,
+          comparison: comparison
+        )
+        flash[:success] = "Comparison saved successfully with comment."
+      else
+        flash[:error] = "Error saving comparison: #{comparison.errors.full_messages.join(', ')}"
+      end
+    else
+      flash[:error] = "Error: One or both properties not found."
+    end
+
+    redirect_to compare_properties_path(property_id_1: params[:property_id_1], property_id_2: params[:property_id_2])
   end
 
   def export_comparison
@@ -48,28 +76,6 @@ class PropertiesController < ApplicationController
       property.title = property_data[:title]
       property.price = extract_numeric_value(property_data[:formatted_price])
       property.size = extract_numeric_value(property_data[:size])
-    end
-  end
-
-  def save_comparison(property_1, property_2, id_1, id_2)
-    prop1 = Property.find_by(easybroker_id: id_1)
-    prop2 = Property.find_by(easybroker_id: id_2)
-
-    if prop1 && prop2
-      comparison = Comparison.new(
-        price_difference: @price_difference,
-        size_difference: @size_difference,
-        user: current_user
-      )
-
-      if comparison.save
-        comparison.properties << [ prop1, prop2 ]
-        Rails.logger.debug "Comparison saved successfully: #{comparison.inspect}"
-      else
-        Rails.logger.debug "Failed to save comparison: #{comparison.errors.full_messages}"
-      end
-    else
-      Rails.logger.debug "Failed to find properties for comparison: #{id_1}, #{id_2}"
     end
   end
 
