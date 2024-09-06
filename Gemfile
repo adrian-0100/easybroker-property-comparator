@@ -8,6 +8,8 @@ gem "httparty"
 # To generate XML files
 gem "builder"
 
+# Use devise for authentication
+gem "devise"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.1"

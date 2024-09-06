@@ -7,16 +7,22 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= yield :head %>
-
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "application" %>
   </head>
 
   <body>
-    <%= yield %>
+    <nav>
+      <%= link_to 'Home', root_path %>
+      <%= link_to 'Comparisons Made', comparisons_path %>
+      <!-- Add more navigation links as needed -->
+    </nav>
+
+    <div class="container">
+      <div class="main-content">
+        <%= yield %>
+      </div>
+      <div class="sidebar">
+        <%= render 'shared/consulted_properties' %>
+      </div>
+    </div>
   </body>
 </html>

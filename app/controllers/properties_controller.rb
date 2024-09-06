@@ -1,4 +1,5 @@
 class PropertiesController < ApplicationController
+  before_action :authenticate_user!, except: [ :index ]
   def compare
     client = EasyBrokerClient.new
 
@@ -10,6 +11,13 @@ class PropertiesController < ApplicationController
                                                           extract_numeric_value(@property_2[:formatted_price]))
       @size_difference = calculate_percentage_difference(extract_numeric_value(@property_1[:size]),
                                                          extract_numeric_value(@property_2[:size]))
+
+      # Save consulted properties
+      save_property(@property_1, params[:property_id_1])
+      save_property(@property_2, params[:property_id_2])
+
+      # Save comparison
+      save_comparison(@property_1, @property_2, params[:property_id_1], params[:property_id_2])
     else
       flash[:error] = "No se pudieron obtener las propiedades."
       redirect_to root_path
@@ -34,6 +42,36 @@ class PropertiesController < ApplicationController
   end
 
   private
+
+  def save_property(property_data, easybroker_id)
+    Property.find_or_create_by(easybroker_id: easybroker_id) do |property|
+      property.title = property_data[:title]
+      property.price = extract_numeric_value(property_data[:formatted_price])
+      property.size = extract_numeric_value(property_data[:size])
+    end
+  end
+
+  def save_comparison(property_1, property_2, id_1, id_2)
+    prop1 = Property.find_by(easybroker_id: id_1)
+    prop2 = Property.find_by(easybroker_id: id_2)
+
+    if prop1 && prop2
+      comparison = Comparison.new(
+        price_difference: @price_difference,
+        size_difference: @size_difference,
+        user: current_user
+      )
+
+      if comparison.save
+        comparison.properties << [ prop1, prop2 ]
+        Rails.logger.debug "Comparison saved successfully: #{comparison.inspect}"
+      else
+        Rails.logger.debug "Failed to save comparison: #{comparison.errors.full_messages}"
+      end
+    else
+      Rails.logger.debug "Failed to find properties for comparison: #{id_1}, #{id_2}"
+    end
+  end
 
   def client
     @client ||= EasyBrokerClient.new

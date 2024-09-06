@@ -1,0 +1,12 @@
+<div class="consulted-properties-sidebar">
+  <h3>Recently Consulted Properties</h3>
+  <ul>
+    <% Property.order(created_at: :desc).limit(5).each do |property| %>
+      <li>
+        <%= property.title %> - 
+        Price: <%= number_to_currency(property.price) %>, 
+        Size: <%= property.size %> m²
+      </li>
+    <% end %>
+  </ul>
+</div>
